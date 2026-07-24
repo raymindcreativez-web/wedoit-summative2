@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-50">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PROJECT RAI - Dynamic Grade 7 Math Reviewer</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; color: black !important; }
+      .print-shadow-none { box-shadow: none !important; border: 1px solid #cbd5e1 !important; }
+      .print-break-inside { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col font-sans text-slate-800 antialiased selection:bg-brand-500 selection:text-white">
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-r from-brand-900 via-brand-800 to-slate-900 text-white shadow-lg sticky top-0 z-40 border-b border-brand-700/50 no-print">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center shadow-md font-black text-xl text-white tracking-wider">
+          <i class="fa-solid fa-square-root-variable"></i>
+        </div>
+        <div>
+          <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight leading-none text-white">PROJECT RAI</h1>
+          <p class="text-xs text-brand-200 font-medium mt-0.5 tracking-wide">Rapid Advancement in Instruction &bull; Grade 7 Mathematics</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm">
+        <span class="bg-brand-800/80 border border-brand-600/60 rounded-lg px-3 py-1.5 text-brand-100 flex items-center gap-2 shadow-inner font-medium">
+          <i class="fa-solid fa-dice text-brand-300"></i>
+          <span>25-Item Randomized Set Generator</span>
+        </span>
+        <button onclick="promptBankPassword()" class="bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-600/60 rounded-lg px-3 py-1.5 font-medium transition flex items-center gap-1.5">
+          <i class="fa-solid fa-database text-amber-400"></i>
+          <span class="hidden sm:inline">Master Bank (75)</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-grow max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
+
+    <!-- VIEW 1: SETUP & START -->
+    <div id="setup-section" class="bg-white rounded-2xl shadow-xl border border-slate-200/80 p-6 sm:p-10 transition-all">
+      <div class="max-w-2xl mx-auto text-center">
+        <div class="inline-flex items-center justify-center w-20 h-20 bg-brand-50 text-brand-600 rounded-3xl mb-5 text-4xl shadow-inner border border-brand-100">
+          <i class="fa-solid fa-calculator"></i>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Grade 7 Mathematics Reviewer</h2>
+        <p class="text-slate-600 mt-2 text-sm sm:text-base leading-relaxed">
+          Welcome to <strong class="text-brand-700">PROJECT RAI</strong>! This dynamic reviewer generates a unique <strong>25-item practice set</strong> to sharpen your skills and build test confidence. Remember, these are practice questions to help you master the concepts, not the actual exam. Challenge yourself and succeed!
+        </p>
+
+        <!-- Feature Pills -->
+        <div class="flex flex-wrap justify-center gap-2 mt-6 text-xs font-semibold text-slate-600">
+          <span class="bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-check-circle text-emerald-500"></i> Percent Change</span>
+          <span class="bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-check-circle text-emerald-500"></i> Discounts & Sale Prices</span>
+          <span class="bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-check-circle text-emerald-500"></i> Simple Interest & VAT</span>
+          <span class="bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-check-circle text-emerald-500"></i> Commissions & Tax</span>
+        </div>
+      </div>
+
+      <div class="max-w-xl mx-auto mt-8 pt-8 border-t border-slate-100">
+        <form id="student-form" onsubmit="startQuiz(event)" class="space-y-5">
+          <div>
+            <label for="student-name" class="block text-sm font-bold text-slate-700 mb-1.5">Full Name <span class="text-rose-500">*</span></label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400 pointer-events-none">
+                <i class="fa-solid fa-user"></i>
+              </span>
+              <input type="text" id="student-name" required placeholder="e.g., Juan Dela Cruz" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition text-slate-800 font-medium">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label for="student-grade" class="block text-sm font-bold text-slate-700 mb-1.5">Grade Level</label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400 pointer-events-none">
+                  <i class="fa-solid fa-graduation-cap"></i>
+                </span>
+                <input type="text" id="student-grade" value="Grade 7" readonly class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-100 text-slate-600 outline-none font-semibold cursor-not-allowed">
+              </div>
+            </div>
+            <div>
+              <label for="student-section" class="block text-sm font-bold text-slate-700 mb-1.5">Section <span class="text-rose-500">*</span></label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400 pointer-events-none">
+                  <i class="fa-solid fa-users text-xs"></i>
+                </span>
+                <select id="student-section" required class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition text-slate-800 font-medium appearance-none bg-white">
+                  <option value="" disabled selected>Select your section...</option>
+                  <option value="Amethyst">Amethyst</option>
+                  <option value="Diamond">Diamond</option>
+                  <option value="Gold">Gold</option>
+                  <option value="SSC">SSC</option>
+                </select>
+                <span class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 pointer-events-none">
+                  <i class="fa-solid fa-chevron-down text-xs"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Timer Option -->
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-1.5">Test Mode & Timer</label>
+            <div class="grid grid-cols-2 gap-3">
+              <label class="border-2 border-brand-500 bg-brand-50/50 p-3 rounded-xl cursor-pointer flex items-center gap-3 transition" id="mode-untimed-label">
+                <input type="radio" name="test-mode" value="untimed" checked onclick="toggleTimerOption(false)" class="text-brand-600 focus:ring-brand-500">
+                <div>
+                  <div class="font-bold text-slate-800 text-sm">Untimed Practice</div>
+                  <div class="text-xs text-slate-500">Relaxed self-paced review</div>
+                </div>
+              </label>
+              <label class="border-2 border-slate-200 p-3 rounded-xl cursor-pointer flex items-center gap-3 transition" id="mode-timed-label">
+                <input type="radio" name="test-mode" value="timed" onclick="toggleTimerOption(true)" class="text-brand-600 focus:ring-brand-500">
+                <div>
+                  <div class="font-bold text-slate-800 text-sm">Timed Exam (30m)</div>
+                  <div class="text-xs text-slate-500">30 minutes countdown</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="w-full mt-6 bg-gradient-to-r from-brand-600 to-brand-800 hover:from-brand-700 hover:to-brand-900 text-white font-extrabold py-4 px-6 rounded-xl shadow-lg hover:shadow-brand-500/25 transition-all duration-200 flex items-center justify-center gap-2 text-lg group">
+            <i class="fa-solid fa-wand-magic-sparkles text-amber-300 group-hover:rotate-12 transition-transform"></i>
+            <span>Generate My 25-Item Test</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- VIEW 2: QUIZ INTERFACE -->
+    <div id="quiz-section" class="hidden space-y-6">
+      <!-- Status & Timer Bar -->
+      <div class="bg-white rounded-2xl shadow-md border border-slate-200 p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3 w-full sm:w-auto">
+          <div class="w-11 h-11 rounded-xl bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-lg shrink-0">
+            <i class="fa-solid fa-user-graduate"></i>
+          </div>
+          <div>
+            <h3 id="display-student-name" class="font-bold text-slate-900 text-base leading-tight">--</h3>
+            <p id="display-student-meta" class="text-xs text-slate-500 font-medium mt-0.5">--</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
+          <!-- Optional Timer -->
+          <div id="timer-badge" class="hidden bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-xl flex items-center gap-2 text-slate-700 font-mono font-bold text-sm">
+            <i class="fa-solid fa-stopwatch text-amber-500"></i>
+            <span id="timer-display">30:00</span>
+          </div>
+
+          <!-- Progress bar -->
+          <div class="w-40 sm:w-48">
+            <div class="flex justify-between text-xs font-extrabold text-slate-600 mb-1">
+              <span>PROGRESS</span>
+              <span id="progress-text">0 / 25</span>
+            </div>
+            <div class="w-full bg-slate-100 rounded-full h-2.5 shadow-inner overflow-hidden">
+              <div id="progress-bar" class="bg-gradient-to-r from-brand-500 to-indigo-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Question Container -->
+      <div class="bg-white rounded-2xl shadow-xl border border-slate-200/80 p-6 sm:p-8 relative">
+        <!-- Question Meta Header -->
+        <div class="flex flex-wrap items-center justify-between gap-2 pb-4 mb-6 border-b border-slate-100">
+          <div class="flex items-center gap-2">
+            <span id="q-number" class="text-xs font-black uppercase tracking-wider text-brand-700 bg-brand-50 border border-brand-200 px-3 py-1 rounded-lg">
+              Item 1 of 25
+            </span>
+            <span id="q-category" class="text-xs font-bold text-slate-600 bg-slate-100 border border-slate-200 px-3 py-1 rounded-lg">
+              Category
+            </span>
+          </div>
+
+          <!-- Bookmark Toggle Button -->
+          <button id="bookmark-btn" onclick="toggleBookmarkCurrent()" class="text-xs font-bold text-slate-500 hover:text-amber-600 bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-200 px-3 py-1 rounded-lg transition flex items-center gap-1.5">
+            <i class="fa-regular fa-bookmark" id="bookmark-icon"></i>
+            <span id="bookmark-text">Mark for Review</span>
+          </button>
+        </div>
+
+        <!-- Question Text -->
+        <p id="q-text" class="text-lg sm:text-xl font-bold text-slate-900 leading-relaxed mb-6"></p>
+
+        <!-- Options Container -->
+        <div id="options-container" class="space-y-3"></div>
+
+        <!-- Navigation Controls -->
+        <div class="mt-8 pt-6 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+          <button id="prev-btn" onclick="navigateQuestion(-1)" class="px-5 py-2.5 rounded-xl border-2 border-slate-200 text-slate-700 font-bold hover:bg-slate-100 hover:border-slate-300 transition flex items-center gap-2 text-sm">
+            <i class="fa-solid fa-arrow-left"></i> Previous
+          </button>
+
+          <div class="flex items-center gap-2">
+            <button id="next-btn" onclick="navigateQuestion(1)" class="px-6 py-2.5 rounded-xl bg-brand-600 text-white font-bold hover:bg-brand-700 shadow-md transition flex items-center gap-2 text-sm">
+              Next <i class="fa-solid fa-arrow-right"></i>
+            </button>
+
+            <button id="submit-btn" onclick="openSubmitModal()" class="hidden px-7 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-lg shadow-emerald-600/20 transition flex items-center gap-2 text-sm">
+              <i class="fa-solid fa-circle-check"></i> Submit Test
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Question Palette / Grid -->
+      <div class="bg-white rounded-2xl shadow-md border border-slate-200 p-5">
+        <div class="flex items-center justify-between mb-4">
+          <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+            <i class="fa-solid fa-table-cells"></i> Question Navigator
+          </h4>
+          <div class="flex items-center gap-3 text-xs font-semibold text-slate-500">
+            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-brand-600 inline-block"></span> Answered</span>
+            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-white border border-slate-300 inline-block"></span> Unanswered</span>
+            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-amber-400 inline-block"></span> Marked</span>
+          </div>
+        </div>
+        <div id="question-palette" class="flex flex-wrap gap-2"></div>
+      </div>
+    </div>
+
+    <!-- VIEW 3: RESULTS & BREAKDOWN -->
+    <div id="results-section" class="hidden space-y-6">
+      <div class="bg-white rounded-2xl shadow-xl border border-slate-200/80 p-6 sm:p-10 text-center relative overflow-hidden print-shadow-none">
+        <div class="absolute -top-12 -right-12 w-40 h-40 bg-brand-50 rounded-full blur-2xl pointer-events-none"></div>
+
+        <div id="score-icon-wrapper" class="inline-flex items-center justify-center w-24 h-24 rounded-3xl bg-emerald-100 text-emerald-600 text-4xl font-extrabold mb-4 shadow-inner">
+          <i id="score-icon" class="fa-solid fa-trophy"></i>
+        </div>
+        
+        <h2 id="result-headline" class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Assessment Complete!</h2>
+        <p id="res-student-info" class="text-slate-500 font-medium text-sm sm:text-base mt-1"></p>
+
+        <!-- Big Score Card -->
+        <div class="mt-8 inline-block bg-gradient-to-b from-slate-50 to-slate-100 border-2 border-slate-200 rounded-3xl px-10 py-6 shadow-inner">
+          <span class="block text-xs font-black uppercase tracking-widest text-slate-500 mb-1">Final Score</span>
+          <span id="final-score" class="text-5xl sm:text-6xl font-black text-brand-700 block tracking-tight">0 / 25</span>
+          <div id="score-percentage-badge" class="mt-3 inline-block px-4 py-1 rounded-full text-sm font-bold bg-emerald-100 text-emerald-800">
+            0% Mastery
+          </div>
+        </div>
+
+        <!-- Growth Mindset Message -->
+        <div class="mt-6 max-w-xl mx-auto bg-brand-50/50 border border-brand-100 rounded-2xl p-5 shadow-sm">
+          <p id="growth-message" class="text-sm font-bold text-brand-900 mb-3"></p>
+          <blockquote class="text-sm italic text-brand-700 border-l-4 border-brand-400 pl-4 py-1 text-left relative">
+            <i class="fa-solid fa-quote-left absolute -left-2 -top-2 text-brand-200 text-lg opacity-50"></i>
+            <span id="growth-quote"></span>
+          </blockquote>
+        </div>
+
+        <!-- Category Mastery Breakdown Grid -->
+        <div class="mt-8 pt-8 border-t border-slate-100 max-w-2xl mx-auto">
+          <h4 class="text-xs font-extrabold uppercase tracking-widest text-slate-500 mb-4 text-center">
+            Cognitive Domain Mastery Breakdown
+          </h4>
+          <div id="cognitive-breakdown" class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-left"></div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-8 flex flex-wrap justify-center gap-3 no-print">
+          <button onclick="window.print()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-900 text-white rounded-xl transition font-bold text-sm flex items-center gap-2 shadow-md">
+            <i class="fa-solid fa-print"></i> Print Result Report
+          </button>
+          <button onclick="restartQuiz()" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl transition font-bold text-sm flex items-center gap-2 shadow-md shadow-brand-600/20">
+            <i class="fa-solid fa-rotate-right"></i> Generate New 25-Item Test
+          </button>
+        </div>
+
+        <!-- Save Status Indicator -->
+        <div id="save-status" class="mt-5 text-sm font-semibold text-slate-500 hidden no-print">
+          <i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving results to database...
+        </div>
+      </div>
+
+      <!-- Item Detailed Analysis -->
+      <div class="bg-white rounded-2xl shadow-xl border border-slate-200/80 p-6 sm:p-8 print-shadow-none">
+        <div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-200">
+          <h3 class="text-lg font-extrabold text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-brand-600"></i> Item-by-Item Review & Explanations
+          </h3>
+          <span class="text-xs font-semibold text-slate-500">25 Questions Evaluated</span>
+        </div>
+        
+        <div id="breakdown-container" class="space-y-4"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-900 text-slate-400 py-6 mt-auto text-center border-t border-slate-800 no-print">
+    <div class="max-w-5xl mx-auto px-4 flex flex-col items-center justify-center space-y-1">
+      <p class="text-sm font-semibold text-slate-300">©2016-2026 wedoIT™Solutions</p>
+      <p class="text-xs text-slate-500 font-medium tracking-wide">Developed by Sirmon™</p>
+    </div>
+  </footer>
+
+  <!-- CUSTOM CONFIRM SUBMIT MODAL (No alert / confirm used) -->
+  <div id="submit-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 transform transition-all scale-100 border border-slate-100">
+      <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center text-2xl font-bold mb-4 mx-auto">
+        <i class="fa-solid fa-circle-question"></i>
+      </div>
+      <h3 class="text-xl font-extrabold text-slate-900 text-center">Ready to Submit Test?</h3>
+      <p id="submit-modal-msg" class="text-sm text-slate-600 text-center mt-2 leading-relaxed">
+        Are you sure you want to finish your test and submit your answers?
+      </p>
+
+      <div class="mt-6 flex items-center gap-3">
+        <button onclick="closeSubmitModal()" class="w-1/2 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition text-sm">
+          Continue Test
+        </button>
+        <button onclick="confirmSubmission()" class="w-1/2 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition shadow-lg shadow-emerald-600/20 text-sm">
+          Yes, Submit Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASSWORD MODAL FOR MASTER BANK -->
+  <div id="password-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 sm:p-8 transform transition-all scale-100 border border-slate-100">
+      <div class="w-14 h-14 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center text-2xl font-bold mb-4 mx-auto">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <h3 class="text-xl font-extrabold text-slate-900 text-center">Educator Access</h3>
+      <p class="text-sm text-slate-600 text-center mt-2 leading-relaxed">
+        Please enter the password to view the Master Question Bank.
+      </p>
+      <div class="mt-4">
+        <input type="password" id="bank-password" placeholder="Enter password..." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition text-slate-800 font-medium text-center">
+        <p id="password-error" class="text-rose-500 text-xs font-bold text-center mt-2 hidden">Incorrect password.</p>
+      </div>
+      <div class="mt-6 flex items-center gap-3">
+        <button onclick="closePasswordModal()" class="w-1/2 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition text-sm">
+          Cancel
+        </button>
+        <button onclick="verifyBankPassword()" class="w-1/2 py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl transition shadow-lg shadow-brand-600/20 text-sm">
+          Unlock
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MASTER QUESTION BANK POOL MODAL -->
+  <div id="bank-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[85vh] flex flex-col overflow-hidden border border-slate-100">
+      <div class="p-5 bg-slate-900 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-database text-amber-400 text-lg"></i>
+          <h3 class="font-extrabold text-lg">Master Question Pool (75 Items)</h3>
+        </div>
+        <button onclick="toggleBankModal()" class="text-slate-400 hover:text-white text-xl">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="p-4 bg-slate-100 border-b border-slate-200 flex items-center gap-3">
+        <input type="text" id="bank-search" oninput="filterBankQuestions()" placeholder="Search questions or categories..." class="w-full px-4 py-2 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-brand-500">
+      </div>
+      <div id="bank-questions-list" class="p-5 overflow-y-auto space-y-3 flex-grow"></div>
+    </div>
+  </div>
+
+  <script>
+    // 75-Item Master Question Bank with Detailed Explanations (Base64 Encoded Answers to Prevent Inspection)
+    const masterQuestions = [
+      { id: 1, cat: 'Remembering', q: 'At a local market, a vendor sold 80 baskets of vegetables last week and 100 baskets this week. Which statement correctly identifies the type of change?', options: { A: 'It is a percentage increase because the new amount is greater than the original.', B: 'It is a percentage decrease because 20 is less than 100.', C: 'It is a percentage increase because the denominator used is 100.', D: 'It is neither because the change is only 20 baskets.' }, _a: 'QQ==', exp: 'An increase occurs when the new value (100) exceeds the initial baseline value (80).' },
+      { id: 2, cat: 'Understanding', q: 'A school garden harvested 150 kg of pechay in June and 120 kg in July. Which description of the change is correct?', options: { A: 'A 20% increase', B: 'A 20% decrease', C: 'A 25% decrease', D: 'A 30% decrease' }, _a: 'Qg==', exp: 'Decrease = 150 - 120 = 30 kg. Percentage decrease = (30 / 150) × 100% = 20%.' },
+      { id: 3, cat: 'Understanding', q: 'A rice store changed the price of a sack from ₱1,200 to ₱1,380. Why is this classified as a percentage increase?', options: { A: 'The new price is ₱180 less than the original price.', B: 'The original price is used as the base, and the new price is higher.', C: 'The new price is used as the base, and the original price is higher.', D: 'The difference is divided by the new price.' }, _a: 'Qg==', exp: 'Percent change always compares the change to the initial (original) price base.' },
+      { id: 4, cat: 'Applying', q: 'A youth group collected 240 plastic bottles during its first cleanup and 180 during its second. Which setup correctly determines the percentage decrease?', options: { A: '(240 - 180) / 180 × 100%', B: '180 / 240 × 100%', C: '(240 - 180) / 240 × 100%', D: '240 / 180 × 100%' }, _a: 'Qw==', exp: 'Percentage decrease formula is: (Original Value - New Value) / Original Value × 100%.' },
+      { id: 5, cat: 'Applying', q: 'The daily supply of bottled water at a canteen rose from 120 bottles to 150 bottles. What was the percentage increase?', options: { A: '20%', B: '25%', C: '30%', D: '35%' }, _a: 'Qg==', exp: 'Increase = 150 - 120 = 30. Percent increase = (30 / 120) × 100% = 0.25 × 100% = 25%.' },
+      { id: 6, cat: 'Analyzing', q: 'A seaweed buyer paid ₱2,000 last month and ₱2,300 this month. Which equation correctly relates the original amount (O), new amount (N), and rate of increase (r)?', options: { A: 'N = O(1 − r)', B: 'N = O(1 + r)', C: 'O = N(1 + r)', D: 'N = O + r' }, _a: 'Qg==', exp: 'New Amount N equals the Original Amount O plus the increase O × r, giving N = O(1 + r).' },
+      { id: 7, cat: 'Evaluating', q: 'A fish vendor reduced a price from ₱1,500 to ₱1,200 and described it as a 20% reduction. Which statement validates this result?', options: { A: 'The ₱300 difference is 20% of the original ₱1,500 price.', B: 'The ₱300 difference is 20% of the new ₱1,200 price.', C: 'The ₱1,200 new price is 20% of the original price.', D: 'The ₱1,500 original price is 20% of the new price.' }, _a: 'QQ==', exp: '₱300 / ₱1,500 = 0.20 or 20%. Comparing against the original price confirms 20%.' },
+      { id: 8, cat: 'Creating', q: 'A resort had 800 visitors in May. Visitor count increased by 15% in June, then decreased by 10% in July. How many visitors were recorded in July?', options: { A: '792', B: '820', C: '828', D: '840' }, _a: 'Qw==', exp: 'June: 800 × 1.15 = 920. July: 920 × (1 - 0.10) = 920 × 0.90 = 828.' },
+      { id: 9, cat: 'Remembering', q: 'Which term refers to the final price of an item after a discount has been applied?', options: { A: 'Original Price', B: 'Discount Rate', C: 'Sale Price', D: 'Selling Price' }, _a: 'Qw==', exp: 'Sale Price is the net price after deducting the discount amount from original price.' },
+      { id: 10, cat: 'Remembering', q: 'What is the term for the amount of money earned by a person for selling something?', options: { A: 'Sales Tax', B: 'Commission', C: 'Interest', D: 'Principal' }, _a: 'Qg==', exp: 'Commission is a fee paid to a salesperson based on a percentage of sales generated.' },
+      { id: 11, cat: 'Remembering', q: 'In the simple interest formula I = Prt, what does the letter “t” represent?', options: { A: 'Total amount', B: 'Time in years', C: 'Tax rate', D: 'Term of discount' }, _a: 'Qg==', exp: 'In I = Prt, P = Principal, r = annual interest rate, and t = time expressed in years.' },
+      { id: 12, cat: 'Remembering', q: 'A clothing shop displays a shirt with a marked price of ₱800. What do you call this ₱800 value?', options: { A: 'Discount', B: 'Sale Price', C: 'Original Price or Selling Price', D: 'Commission' }, _a: 'Qw==', exp: 'The marked tag price prior to any promotional markdown is the Original Price.' },
+      { id: 13, cat: 'Remembering', q: 'Which of the following is also commonly known as Value Added Tax (VAT)?', options: { A: 'Sales Tax', B: 'Simple Interest', C: 'Commission Rate', D: 'Discount' }, _a: 'QQ==', exp: 'Sales tax levied on consumption goods is structured as Value Added Tax (VAT).' },
+      { id: 14, cat: 'Understanding', q: 'If a customer is given a 12% discount, what percentage of the original price are they actually paying?', options: { A: '12%', B: '100%', C: '88%', D: '112%' }, _a: 'Qw==', exp: 'Paying percentage = 100% - 12% discount = 88% of original price.' },
+      { id: 15, cat: 'Understanding', q: 'A sales agent sells appliances worth ₱50,000 and earns a 6% commission. Which value represents the amount the agent earns?', options: { A: '₱3,000', B: '₱300', C: '₱47,000', D: '₱53,000' }, _a: 'QQ==', exp: 'Commission = ₱50,000 × 0.06 = ₱3,000.' },
+      { id: 16, cat: 'Understanding', q: 'A hardware store sells materials for ₱2,500 before a 12% sales tax. The cashier identifies the tax as ₱300. How is the total bill determined?', options: { A: 'Subtracting the tax from the original price.', B: 'Dividing the price by the tax rate.', C: 'Adding the tax to the original price.', D: 'Multiplying the tax by the original price.' }, _a: 'Qw==', exp: 'Total invoice = Subtotal + Sales Tax (₱2,500 + ₱300 = ₱2,800).' },
+      { id: 17, cat: 'Applying', q: 'A bag priced at ₱1,200 is offered at a 25% discount. How much does the buyer pay?', options: { A: '₱300', B: '₱900', C: '₱850', D: '₱950' }, _a: 'Qg==', exp: 'Discount = ₱1,200 × 0.25 = ₱300. Sale Price = ₱1,200 - ₱300 = ₱900.' },
+      { id: 18, cat: 'Applying', q: 'A cooperative lends ₱10,000 at 5% simple interest per year for 2 years. What is the simple interest earned?', options: { A: '₱500', B: '₱1,000', C: '₱10,500', D: '₱11,000' }, _a: 'Qg==', exp: 'I = Prt = ₱10,000 × 0.05 × 2 = ₱1,000.' },
+      { id: 19, cat: 'Applying', q: 'A handicraft seller receives an 8% commission on ₱35,000 worth of products. How much commission is received?', options: { A: '₱2,400', B: '₱2,800', C: '₱3,200', D: '₱4,375' }, _a: 'Qg==', exp: 'Commission = ₱35,000 × 0.08 = ₱2,800.' },
+      { id: 20, cat: 'Analyzing', q: 'A family buys an appliance priced at ₱4,500 before a 12% sales tax. What is the total amount to be paid?', options: { A: '₱4,860', B: '₱5,040', C: '₱5,000', D: '₱5,400' }, _a: 'Qg==', exp: 'Tax = ₱4,500 × 0.12 = ₱540. Total = ₱4,500 + ₱540 = ₱5,040.' },
+      { id: 21, cat: 'Analyzing', q: 'A mathematics book costs ₱440 after a 12% discount was deducted. What was its original price?', options: { A: '₱400', B: '₱488', C: '₱500', D: '₱520' }, _a: 'Qw==', exp: 'Sale Price = 88% of Original. Original Price = ₱440 / 0.88 = ₱500.' },
+      { id: 22, cat: 'Evaluating', q: 'Nanay Aning borrowed ₱35,500 with a 7% simple interest rate to be paid in 3 years. She calculated the interest as ₱7,455. Is she correct?', options: { A: 'Yes, because I = (35,500)(0.07)(3) = 7,455.', B: 'No, because she should have divided by 3.', C: 'No, because the rate should be 0.7.', D: 'Yes, because that is the maturity value.' }, _a: 'QQ==', exp: 'I = 35,500 × 0.07 × 3 = 7,455. Her calculation is accurate.' },
+      { id: 23, cat: 'Evaluating', q: 'A salesman earns a base salary of ₱3,600/week plus 8% commission on sales. If his sales are ₱22,500, he claims his total weekly salary is ₱5,400. Is his claim accurate?', options: { A: 'No, he only earned ₱1,800.', B: 'Yes, because ₱1,800 commission + ₱3,600 base = ₱5,400.', C: 'No, because commission is only on the base salary.', D: 'Yes, because 8% of ₱3,600 is ₱5,400.' }, _a: 'Qg==', exp: 'Commission = ₱22,500 × 0.08 = ₱1,800. Total = ₱3,600 + ₱1,800 = ₱5,400.' },
+      { id: 24, cat: 'Creating', q: 'A savings group deposits ₱15,000 in an account that earns 4% simple interest per year for 3 years. What is the maturity value, Principal + Interest?', options: { A: '₱15,600', B: '₱16,200', C: '₱16,800', D: '₱18,000' }, _a: 'Qw==', exp: 'Interest = 15,000 × 0.04 × 3 = 1,800. Total maturity = 15,000 + 1,800 = ₱16,800.' },
+      { id: 25, cat: 'Creating', q: 'If a loan of ₱15,900 at 9% simple interest costs ₱8,586 in interest, how many years was the loan for?', options: { A: '4 years', B: '5 years', C: '6 years', D: '7 years' }, _a: 'Qw==', exp: 't = I / (P × r) = 8,586 / (15,900 × 0.09) = 8,586 / 1,431 = 6 years.' },
+      { id: 26, cat: 'Remembering', q: 'At the Odiongan public market, Aling Rosa sold 80 baskets of vegetables last Saturday and 100 baskets this Saturday. What is the percent change?', options: { A: 'The sales increased by 25%.', B: 'The sales increased by 20%.', C: 'The sales decreased by 20%.', D: 'The sales decreased by 25%.' }, _a: 'QQ==', exp: 'Change = (100 - 80) / 80 × 100% = 20 / 80 × 100% = 25% increase.' },
+      { id: 27, cat: 'Understanding', q: 'A school garden in Alcantara harvested 150 kilograms of pechay in June and 120 kilograms in July. Which description of the change is correct?', options: { A: 'A 20% decrease', B: 'A 20% increase', C: 'A 25% decrease', D: 'A 30% decrease' }, _a: 'QQ==', exp: 'Change = (120 - 150) / 150 = -30 / 150 = -0.20 or 20% decrease.' },
+      { id: 28, cat: 'Understanding', q: 'A rice store in San Agustin changed the price of a sack from PHP 1,200 to PHP 1,380. Which information shows that the change is a percentage increase?', options: { A: 'The new price is PHP 180 less than the original price.', B: 'The original price is used as the base, and the new price is higher.', C: 'The new price is used as the base, and the original price is higher.', D: 'The difference is divided by the new price.' }, _a: 'Qg==', exp: 'Since 1,380 > 1,200 when measured from original base 1,200, it represents an increase.' },
+      { id: 29, cat: 'Applying', q: 'A youth group in Ferrol collected 240 plastic bottles during its first cleanup and 180 during its second. Which setup correctly determines the percentage decrease?', options: { A: '(240 - 180) / 180 × 100%', B: '(240 - 180) / 240 × 100%', C: '180 / 240 × 100%', D: '240 / 180 × 100%' }, _a: 'Qg==', exp: 'The decrease formula subtracts new from original, dividing by original value 240.' },
+      { id: 30, cat: 'Applying', q: 'A bakery in Looc produced 400 pandesal in the morning and 460 in the afternoon. Which statement is correct?', options: { A: 'It is a decrease because 60 is subtracted from 460.', B: 'It is an increase because the new amount is greater than the original amount.', C: 'It is a decrease because 400 is less than 460.', D: 'It is neither an increase nor a decrease because both amounts are positive.' }, _a: 'Qg==', exp: 'New production (460) exceeds morning baseline (400), confirming an increase.' },
+      { id: 31, cat: 'Analyzing', q: 'At a school canteen in Calatrava, the daily supply of bottled water rose from 120 bottles to 150 bottles during an athletic meet. What was the percentage increase?', options: { A: '20%', B: '25%', C: '30%', D: '35%' }, _a: 'Qg==', exp: '30 / 120 = 1/4 = 25%.' },
+      { id: 32, cat: 'Evaluating', q: 'A coconut farmer in Santa Maria harvested 500 coconuts before a storm and 425 afterward. What was the percentage decrease?', options: { A: '10%', B: '15%', C: '17.5%', D: '20%' }, _a: 'Qg==', exp: 'Decrease = 75. Percentage = 75 / 500 = 0.15 = 15%.' },
+      { id: 33, cat: 'Creating', q: 'A tricycle association in Romblon town reduced its daily fuel use from 40 liters to 34 liters. By what percent did fuel use decrease?', options: { A: '6%', B: '12%', C: '15%', D: '17.6%' }, _a: 'Qw==', exp: 'Reduction = 6 liters. 6 / 40 = 0.15 or 15% decrease.' },
+      { id: 34, cat: 'Remembering', q: 'Which term refers to the final price at which a product or item is sold to a customer after discounts have been applied?', options: { A: 'Original Price', B: 'Discount Rate', C: 'Sale Price', D: 'Selling Price' }, _a: 'Qw==', exp: 'Sale Price is the net discounted amount paid.' },
+      { id: 35, cat: 'Remembering', q: 'A seaweed buyer in Banton paid PHP 2,000 for one delivery last month and PHP 2,300 this month. Which equation correctly relates the original amount O, new amount N, and rate of increase r?', options: { A: 'N = O(1 − r)', B: 'N = O + r', C: 'N = O(1 + r)', D: 'O = N(1 + r)' }, _a: 'Qw==', exp: 'N = O + O(r) = O(1 + r).' },
+      { id: 36, cat: 'Remembering', q: 'A sari-sari store had 600 canned goods; after some were sold, 510 remained. Which equation represents the relationship if r is the rate of decrease?', options: { A: '510 = 600(1 − r)', B: '510 = 600(1 + r)', C: '600 = 510(1 − r)', D: '600 = 510 + r' }, _a: 'QQ==', exp: 'Remaining amount = Original × (1 - rate of decrease).' },
+      { id: 37, cat: 'Remembering', q: 'The membership of a math club increased from 40 to 50 learners. Why is 40 used as the denominator when checking the percentage?', options: { A: 'It is the larger amount.', B: 'It is the new amount after the change.', C: 'It is the original amount from which the change is measured.', D: 'It is the difference between the two amounts.' }, _a: 'Qw==', exp: 'Percentage calculations always use the initial baseline amount as denominator.' },
+      { id: 38, cat: 'Remembering', q: 'Which of the following is commonly known as Value Added Tax (VAT)?', options: { A: 'Sales Tax', B: 'Simple Interest', C: 'Commission Rate', D: 'Discount' }, _a: 'QQ==', exp: 'Value Added Tax (VAT) is the standard consumption sales tax.' },
+      { id: 39, cat: 'Understanding', q: 'A resort in Concepcion had 800 visitors in May. Visitor count increased by 15% in June, then decreased by 10% in July. How many visitors were recorded in July?', options: { A: '792', B: '820', C: '828', D: '840' }, _a: 'Qw==', exp: '800 × 1.15 = 920. 920 × 0.90 = 828.' },
+      { id: 40, cat: 'Understanding', q: 'A school cooperative bought notebooks for PHP 25. The supplier raised the price by 20%, but the cooperative later received a 10% reduction from the increased price. What was the final price?', options: { A: 'PHP 26.50', B: 'PHP 27.00', C: 'PHP 27.50', D: 'PHP 28.00' }, _a: 'Qg==', exp: '25 × 1.20 = 30. 30 × 0.90 = PHP 27.00.' },
+      { id: 41, cat: 'Understanding', q: 'A farmer harvested 1,000 kg of rice. The harvest decreased by 12% during a dry month, then increased by 25% the next month. What was the harvest after both changes?', options: { A: '1,050 kg', B: '1,088 kg', C: '1,100 kg', D: '1,130 kg' }, _a: 'Qw==', exp: '1000 × 0.88 = 880. 880 × 1.25 = 1,100 kg.' },
+      { id: 42, cat: 'Applying', q: 'A library recorded 2,400 visits. Visits rose by 10% in the next quarter and then by another 5% in the following quarter. How many visits were recorded after the two increases?', options: { A: '2,640', B: '2,760', C: '2,772', D: '2,880' }, _a: 'Qw==', exp: '2,400 × 1.10 = 2,640. 2,640 × 1.05 = 2,772 visits.' },
+      { id: 43, cat: 'Applying', q: 'A clothing shop displays a shirt with a marked price of PHP 800 and a 15% discount. Which pair is the discount and the sale price?', options: { A: 'PHP 100 and PHP 700', B: 'PHP 120 and PHP 680', C: 'PHP 120 and PHP 920', D: 'PHP 680 and PHP 120' }, _a: 'Qg==', exp: 'Discount = 800 × 0.15 = 120. Sale Price = 800 - 120 = PHP 680.' },
+      { id: 44, cat: 'Applying', q: 'A sales agent sells appliances worth PHP 50,000 and earns a 6% commission. Which value is the commission?', options: { A: 'PHP 300', B: 'PHP 3,000', C: 'PHP 47,000', D: 'PHP 53,000' }, _a: 'Qg==', exp: '50,000 × 0.06 = PHP 3,000.' },
+      { id: 45, cat: 'Analyzing', q: 'A hardware store sells materials worth PHP 2,500 before a 12% sales tax. Which pair identifies the tax and the total bill?', options: { A: 'PHP 250 tax and PHP 2,750 total', B: 'PHP 300 tax and PHP 2,800 total', C: 'PHP 300 tax and PHP 2,200 total', D: 'PHP 2,800 tax and PHP 300 total' }, _a: 'Qg==', exp: 'Tax = 2500 × 0.12 = 300. Total = 2500 + 300 = PHP 2,800.' },
+      { id: 46, cat: 'Analyzing', q: 'A cooperative lends PHP 10,000 at 5% simple interest per year for 2 years. Which value represents the simple interest?', options: { A: 'PHP 500', B: 'PHP 1,000', C: 'PHP 10,500', D: 'PHP 11,000' }, _a: 'Qg==', exp: 'I = 10,000 × 0.05 × 2 = PHP 1,000.' },
+      { id: 47, cat: 'Evaluating', q: 'A bag priced at PHP 1,200 is offered at a 25% discount. How much does the buyer pay?', options: { A: 'PHP 300', B: 'PHP 850', C: 'PHP 900', D: 'PHP 950' }, _a: 'Qw==', exp: '1,200 × (1 - 0.25) = 1,200 × 0.75 = PHP 900.' },
+      { id: 48, cat: 'Evaluating', q: 'A seller receives an 8% commission on PHP 35,000 worth of products. How much commission does the seller receive?', options: { A: 'PHP 2,400', B: 'PHP 2,800', C: 'PHP 3,200', D: 'PHP 4,375' }, _a: 'Qg==', exp: '35,000 × 0.08 = PHP 2,800.' },
+      { id: 49, cat: 'Creating', q: 'A family in Calatrava buys a small appliance priced at PHP 4,500 before 12% sales tax. What is the total amount to be paid?', options: { A: 'PHP 4,860', B: 'PHP 5,000', C: 'PHP 5,040', D: 'PHP 5,400' }, _a: 'Qw==', exp: '4,500 × 1.12 = PHP 5,040.' },
+      { id: 50, cat: 'Creating', q: 'A savings group in Cajidioc deposits PHP 15,000 in an account that earns 4% simple interest per year for 3 years. What is the total amount, Principal + Interest, after 3 years?', options: { A: 'PHP 15,600', B: 'PHP 16,200', C: 'PHP 16,800', D: 'PHP 18,000' }, _a: 'Qw==', exp: '15,000 + (15,000 × 0.04 × 3) = 15,000 + 1,800 = PHP 16,800.' },
+      { id: 51, cat: 'Remembering', q: 'Which of the following correctly describes percentage increase?', options: { A: 'It measures the amount of increase compared to the new value.', B: 'It measures the amount of increase in comparison to the original value, expressed as a percentage.', C: 'It is the difference between the original and the new value.', D: 'It is the original value divided by the amount of increase.' }, _a: 'Qg==', exp: 'Percentage increase evaluates relative growth from original baseline.' },
+      { id: 52, cat: 'Understanding', q: 'A school garden harvested 150 kg of pechay in June and 120 kg in July. Which description of the change is correct?', options: { A: 'A 20% increase', B: 'A 20% decrease', C: 'A 25% decrease', D: 'A 30% decrease' }, _a: 'Qg==', exp: '(150 - 120)/150 = 30/150 = 20% decrease.' },
+      { id: 53, cat: 'Understanding', q: 'A store in San Agustin changed the price of a sack of rice from PHP 1,200 to PHP 1,380. Why is this classified as a percentage increase?', options: { A: 'The new price is lower than the original.', B: 'The original price is used as the base, and the new price is higher.', C: 'The denominator used in the formula is the new price.', D: 'The difference is subtracted from the original price.' }, _a: 'Qg==', exp: 'The new price is higher than the original base price.' },
+      { id: 54, cat: 'Applying', q: 'A youth group collected 240 plastic bottles during its first cleanup and 180 during its second. Which setup correctly determines the percentage decrease?', options: { A: '(240 - 180) / 180 × 100%', B: '180 / 240 × 100%', C: '(240 - 180) / 240 × 100%', D: '240 / 180 × 100%' }, _a: 'Qw==', exp: 'Decrease divided by original 240 multiplied by 100%.' },
+      { id: 55, cat: 'Applying', q: 'A bakery in Looc produced 400 pandesal in the morning and 460 in the afternoon. What was the percentage increase?', options: { A: '13%', B: '15%', C: '60%', D: '87%' }, _a: 'Qg==', exp: '(460 - 400) / 400 = 60 / 400 = 0.15 = 15%.' },
+      { id: 56, cat: 'Analyzing', q: 'After increasing the price by PHP 1,200.00, the price of a TV set becomes PHP 7,600.00. What was the percentage increase in the price?', options: { A: '15.79%', B: '18.75%', C: '20.00%', D: '25.00%' }, _a: 'Qg==', exp: 'Original = 7,600 - 1,200 = 6,400. % Increase = 1,200 / 6,400 = 0.1875 = 18.75%.' },
+      { id: 57, cat: 'Evaluating', q: 'Tom recorded a score of 80 in his first Math attempt and 91 in the second. If the required percentage increase to proceed is at least 10%, can Tom proceed?', options: { A: 'No, because his increase is only 11%.', B: 'Yes, because his percentage increase is 13.75%.', C: 'No, because his percentage increase is 1.1%.', D: 'Yes, because his score is above 90.' }, _a: 'Qg==', exp: 'Increase = (91 - 80) / 80 = 11 / 80 = 13.75%, which is ≥ 10%.' },
+      { id: 58, cat: 'Creating', q: 'In 2020, a school recorded 1,200 enrollees, while in 2022, the total is 1,954. What is the percentage increase in the school’s enrollment?', options: { A: '61.20%', B: '62.83%', C: '75.40%', D: '162.83%' }, _a: 'Qg==', exp: 'Increase = 1,954 - 1,200 = 754. % Increase = 754 / 1,200 = 62.83%.' },
+      { id: 59, cat: 'Remembering', q: 'What term refers to the final price at which a product is sold after discounts have been applied?', options: { A: 'Original Price', B: 'Selling Price', C: 'Sale Price', D: 'Discount Rate' }, _a: 'Qw==', exp: 'Sale price is the actual discounted price paid.' },
+      { id: 60, cat: 'Remembering', q: 'What is the amount of money earned by a person for selling something?', options: { A: 'Sales Tax', B: 'Commission', C: 'Simple Interest', D: 'Principal' }, _a: 'Qg==', exp: 'Commission is the sales performance incentive pay.' },
+      { id: 61, cat: 'Remembering', q: 'In the simple interest formula I = Prt, what does t represent?', options: { A: 'Total amount', B: 'Time in terms of year', C: 'Tax rate', D: 'Term of discount' }, _a: 'Qg==', exp: 'Time (t) is measured in years in simple interest.' },
+      { id: 62, cat: 'Remembering', q: 'Which term is also known as the original price?', options: { A: 'Sale Price', B: 'Discount', C: 'Selling Price', D: 'Commission Rate' }, _a: 'Qw==', exp: 'In retail terminology, selling price or list price denotes original price.' },
+      { id: 63, cat: 'Remembering', q: 'What is the other common name for Sales Tax?', options: { A: 'Interest Rate', B: 'Commission', C: 'Value Added Tax (VAT)', D: 'Discount' }, _a: 'Qw==', exp: 'VAT (Value Added Tax) is standard consumption sales tax.' },
+      { id: 64, cat: 'Understanding', q: 'A school has 800 students, and 37.5% are girls. If the number of boys increases by 20% and girls by 10%, what is the percentage change in total students?', options: { A: '15.00%', B: '16.25%', C: '20.00%', D: '30.00%' }, _a: 'Qg==', exp: 'Girls = 300, Boys = 500. New Girls = 330, New Boys = 600. Total = 930. Increase = (930 - 800)/800 = 130/800 = 16.25%.' },
+      { id: 65, cat: 'Understanding', q: 'A school cooperative bought notebooks for PHP 25. The supplier raised the price by 20%, then later gave a 10% reduction from that increased price. What was the final price?', options: { A: 'PHP 26.50', B: 'PHP 27.00', C: 'PHP 27.50', D: 'PHP 28.00' }, _a: 'Qg==', exp: '25 × 1.20 = 30; 30 × 0.90 = PHP 27.00.' },
+      { id: 66, cat: 'Understanding', q: 'A farmer harvested 1,000 kg of rice. The harvest decreased by 12% during a dry month, then increased by 25% the next month. What was the harvest after both changes?', options: { A: '1,050 kg', B: '1,088 kg', C: '1,100 kg', D: '1,125 kg' }, _a: 'Qw==', exp: '1,000 × 0.88 = 880; 880 × 1.25 = 1,100 kg.' },
+      { id: 67, cat: 'Applying', q: 'A refrigerator originally costs PHP 18,999 with a 38% discount. How much will the buyer save through the discount?', options: { A: 'PHP 7,219.62', B: 'PHP 7,500.00', C: 'PHP 11,778.38', D: 'PHP 12,000.00' }, _a: 'QQ==', exp: 'Savings = 18,999 × 0.38 = PHP 7,219.62.' },
+      { id: 68, cat: 'Applying', q: 'A real estate agent sold a house for PHP 2,500,000. If she makes a 3% commission, how much money did she earn?', options: { A: 'PHP 7,500', B: 'PHP 75,000', C: 'PHP 250,000', D: 'PHP 750,000' }, _a: 'Qg==', exp: 'Commission = 2,500,000 × 0.03 = PHP 75,000.' },
+      { id: 69, cat: 'Applying', q: 'How much simple interest is earned on PHP 6,200 at 4% for one year?', options: { A: 'PHP 240', B: 'PHP 248', C: 'PHP 6,448', D: 'PHP 2,480' }, _a: 'Qg==', exp: 'I = 6,200 × 0.04 × 1 = PHP 248.' },
+      { id: 70, cat: 'Analyzing', q: 'A mathematics book is on sale for PHP 440 after a 12% discount was deducted. What was its original price?', options: { A: 'PHP 387.20', B: 'PHP 492.80', C: 'PHP 500.00', D: 'PHP 512.00' }, _a: 'Qw==', exp: '440 / 0.88 = PHP 500.00.' },
+      { id: 71, cat: 'Analyzing', q: 'What is the commission rate of a sales agent who received PHP 8,995 from selling an appliance worth PHP 29,999?', options: { A: '25%', B: '29.98%', C: '30.00%', D: '35%' }, _a: 'Qg==', exp: 'Rate = 8,995 / 29,999 = 0.29984 = 29.98%.' },
+      { id: 72, cat: 'Evaluating', q: 'Nanay Aning borrowed PHP 35,500 at 7% simple interest for 3 years. She calculated the interest as PHP 7,455. Is she correct?', options: { A: 'Yes, because I = (35,500)(0.07)(3) = 7,455.', B: 'No, because the interest should be PHP 2,485.', C: 'No, because the rate should be 0.7.', D: 'Yes, because that is the total amount to be paid.' }, _a: 'QQ==', exp: 'Interest calculation I = Prt is correct.' },
+      { id: 73, cat: 'Evaluating', q: 'Kim earns a base salary of PHP 3,600/week plus 8% commission. If his sales are PHP 22,500, he says his total salary is PHP 5,400. Is he correct?', options: { A: 'No, he only earned PHP 1,800.', B: 'Yes, because PHP 1,800 commission + PHP 3,600 base = PHP 5,400.', C: 'No, because commission is only calculated on the base salary.', D: 'Yes, because 8% of PHP 3,600 is PHP 5,400.' }, _a: 'Qg==', exp: '3,600 base + (22,500 × 0.08) = 3,600 + 1,800 = PHP 5,400.' },
+      { id: 74, cat: 'Creating', q: 'A grocery bill is PHP 12,564 plus a sales tax of 12.8%. What is the total amount to be paid?', options: { A: 'PHP 1,608.19', B: 'PHP 14,172.19', C: 'PHP 14,000.00', D: 'PHP 15,172.19' }, _a: 'Qg==', exp: 'Tax = 12,564 × 0.128 = 1,608.192. Total = 12,564 + 1,608.192 = PHP 14,172.19.' },
+      { id: 75, cat: 'Creating', q: 'A bank offers 3.5% simple interest on savings. If you deposit PHP 10,555, what is the total amount, Principal + Interest, after two years?', options: { A: 'PHP 738.85', B: 'PHP 11,293.85', C: 'PHP 11,555.00', D: 'PHP 12,293.85' }, _a: 'Qg==', exp: 'Interest = 10,555 × 0.035 × 2 = 738.85. Total = 10,555 + 738.85 = PHP 11,293.85.' }
+    ];
+
+    let activeQuestions = [];
+    let userAnswers = {};
+    let bookmarkedQuestions = new Set();
+    let currentIndex = 0;
+    let studentDetails = {};
+    let timerInterval = null;
+    let timerSeconds = 1800; // 30 minutes
+    let isTimedMode = false;
+    const TEST_LIMIT = 25;
+
+    // TODO: PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwK2K7u7aAL9aq2nDznTUoX1rsr5Pekfj8KQtBgy8joKDmom0siFJwB9ey21VvixirYwg/exec';
+
+    function toggleTimerOption(timed) {
+      isTimedMode = timed;
+      const untimedLbl = document.getElementById('mode-untimed-label');
+      const timedLbl = document.getElementById('mode-timed-label');
+
+      if (timed) {
+        timedLbl.className = 'border-2 border-brand-500 bg-brand-50/50 p-3 rounded-xl cursor-pointer flex items-center gap-3 transition';
+        untimedLbl.className = 'border-2 border-slate-200 p-3 rounded-xl cursor-pointer flex items-center gap-3 transition';
+      } else {
+        untimedLbl.className = 'border-2 border-brand-500 bg-brand-50/50 p-3 rounded-xl cursor-pointer flex items-center gap-3 transition';
+        timedLbl.className = 'border-2 border-slate-200 p-3 rounded-xl cursor-pointer flex items-center gap-3 transition';
+      }
+    }
+
+    function startQuiz(e) {
+      e.preventDefault();
+
+      studentDetails = {
+        name: document.getElementById('student-name').value.trim(),
+        grade: document.getElementById('student-grade').value,
+        section: document.getElementById('student-section').value.trim()
+      };
+
+      // Shuffling algorithm to guarantee 25 fresh items
+      activeQuestions = [...masterQuestions].sort(() => 0.5 - Math.random()).slice(0, TEST_LIMIT);
+
+      userAnswers = {};
+      bookmarkedQuestions.clear();
+      currentIndex = 0;
+
+      document.getElementById('display-student-name').textContent = studentDetails.name;
+      document.getElementById('display-student-meta').textContent = `${studentDetails.grade} • Section ${studentDetails.section}`;
+
+      // Timer Setup
+      const timerBadge = document.getElementById('timer-badge');
+      if (isTimedMode) {
+        timerBadge.classList.remove('hidden');
+        timerSeconds = 1800;
+        runTimer();
+      } else {
+        timerBadge.classList.add('hidden');
+        if (timerInterval) clearInterval(timerInterval);
+      }
+
+      document.getElementById('setup-section').classList.add('hidden');
+      document.getElementById('quiz-section').classList.remove('hidden');
+
+      renderQuestionPalette();
+      loadQuestion(0);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function runTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      updateTimerDisplay();
+
+      timerInterval = setInterval(() => {
+        timerSeconds--;
+        updateTimerDisplay();
+
+        if (timerSeconds <= 0) {
+          clearInterval(timerInterval);
+          openSubmitModal("Time is up! Your test will now be submitted automatically.");
+          confirmSubmission();
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const mins = Math.floor(timerSeconds / 60);
+      const secs = timerSeconds % 60;
+      const display = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+      document.getElementById('timer-display').textContent = display;
+
+      if (timerSeconds < 300) { // last 5 mins warning
+        document.getElementById('timer-badge').className = 'bg-rose-100 border border-rose-300 text-rose-700 px-3 py-1.5 rounded-xl flex items-center gap-2 font-mono font-bold text-sm animate-pulse';
+      }
+    }
+
+    function renderQuestionPalette() {
+      const palette = document.getElementById('question-palette');
+      palette.innerHTML = '';
+      activeQuestions.forEach((_, idx) => {
+        const btn = document.createElement('button');
+        btn.id = `palette-btn-${idx}`;
+        btn.textContent = idx + 1;
+        btn.onclick = () => jumpToQuestion(idx);
+        btn.className = `w-10 h-10 rounded-xl text-xs font-bold transition flex items-center justify-center border-2 border-slate-200 bg-white text-slate-700 hover:border-brand-400`;
+        palette.appendChild(btn);
+      });
+    }
+
+    function updatePaletteUI() {
+      activeQuestions.forEach((q, idx) => {
+        const btn = document.getElementById(`palette-btn-${idx}`);
+        if (!btn) return;
+
+        const isAnswered = userAnswers[q.id] !== undefined;
+        const isBookmarked = bookmarkedQuestions.has(q.id);
+        const isCurrent = idx === currentIndex;
+
+        let baseStyle = "w-10 h-10 rounded-xl text-xs font-extrabold transition flex items-center justify-center border-2 shadow-sm relative ";
+
+        if (isCurrent) {
+          baseStyle += "ring-4 ring-brand-200 ring-offset-1 ";
+        }
+
+        if (isBookmarked) {
+          baseStyle += "bg-amber-400 text-slate-900 border-amber-500 ";
+        } else if (isAnswered) {
+          baseStyle += "bg-brand-600 text-white border-brand-600 ";
+        } else {
+          baseStyle += "bg-white text-slate-700 border-slate-200 hover:bg-slate-50 ";
+        }
+
+        btn.className = baseStyle;
+      });
+    }
+
+    function loadQuestion(index) {
+      currentIndex = index;
+      const q = activeQuestions[currentIndex];
+
+      document.getElementById('q-number').textContent = `Item ${currentIndex + 1} of ${TEST_LIMIT}`;
+      document.getElementById('q-category').textContent = q.cat;
+      document.getElementById('q-text').textContent = q.q;
+
+      // Bookmark button state
+      const isBookmarked = bookmarkedQuestions.has(q.id);
+      const bkBtn = document.getElementById('bookmark-btn');
+      const bkIcon = document.getElementById('bookmark-icon');
+      const bkText = document.getElementById('bookmark-text');
+
+      if (isBookmarked) {
+        bkBtn.className = "text-xs font-bold text-amber-800 bg-amber-100 border border-amber-300 px-3 py-1 rounded-lg transition flex items-center gap-1.5";
+        bkIcon.className = "fa-solid fa-bookmark text-amber-600";
+        bkText.textContent = "Marked for Review";
+      } else {
+        bkBtn.className = "text-xs font-bold text-slate-500 hover:text-amber-600 bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-200 px-3 py-1 rounded-lg transition flex items-center gap-1.5";
+        bkIcon.className = "fa-regular fa-bookmark";
+        bkText.textContent = "Mark for Review";
+      }
+
+      // Options Rendering
+      const container = document.getElementById('options-container');
+      container.innerHTML = '';
+
+      Object.entries(q.options).forEach(([key, value]) => {
+        const isSelected = userAnswers[q.id] === key;
+        const optionBtn = document.createElement('div');
+        optionBtn.onclick = () => selectOption(q.id, key);
+        optionBtn.className = `p-4 rounded-xl border-2 transition cursor-pointer flex items-center gap-4 ${
+          isSelected 
+            ? 'border-brand-600 bg-brand-50 text-brand-900 shadow-md font-bold' 
+            : 'border-slate-200 hover:border-brand-300 hover:bg-slate-50 text-slate-800'
+        }`;
+
+        optionBtn.innerHTML = `
+          <div class="w-8 h-8 rounded-xl flex items-center justify-center font-black text-sm shrink-0 shadow-sm ${
+            isSelected ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600 border border-slate-200'
+          }">
+            ${key}
+          </div>
+          <div class="text-sm sm:text-base leading-snug">${value}</div>
+        `;
+        container.appendChild(optionBtn);
+      });
+
+      // Navigation Prev/Next button states
+      document.getElementById('prev-btn').disabled = currentIndex === 0;
+      document.getElementById('prev-btn').classList.toggle('opacity-40', currentIndex === 0);
+      document.getElementById('prev-btn').classList.toggle('cursor-not-allowed', currentIndex === 0);
+
+      if (currentIndex === TEST_LIMIT - 1) {
+        document.getElementById('next-btn').classList.add('hidden');
+        document.getElementById('submit-btn').classList.remove('hidden');
+      } else {
+        document.getElementById('next-btn').classList.remove('hidden');
+        document.getElementById('submit-btn').classList.add('hidden');
+      }
+
+      // Update progress display
+      const answeredCount = Object.keys(userAnswers).length;
+      const progressPercent = (answeredCount / TEST_LIMIT) * 100;
+      document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+      document.getElementById('progress-text').textContent = `${answeredCount} / ${TEST_LIMIT}`;
+
+      updatePaletteUI();
+    }
+
+    function selectOption(qId, key) {
+      userAnswers[qId] = key;
+      loadQuestion(currentIndex);
+    }
+
+    function toggleBookmarkCurrent() {
+      const q = activeQuestions[currentIndex];
+      if (bookmarkedQuestions.has(q.id)) {
+        bookmarkedQuestions.delete(q.id);
+      } else {
+        bookmarkedQuestions.add(q.id);
+      }
+      loadQuestion(currentIndex);
+    }
+
+    function navigateQuestion(dir) {
+      const nextIdx = currentIndex + dir;
+      if (nextIdx >= 0 && nextIdx < TEST_LIMIT) {
+        loadQuestion(nextIdx);
+      }
+    }
+
+    function jumpToQuestion(idx) {
+      loadQuestion(idx);
+    }
+
+    function openSubmitModal(customMessage) {
+      const answeredCount = Object.keys(userAnswers).length;
+      const unanswered = TEST_LIMIT - answeredCount;
+
+      const modalMsg = document.getElementById('submit-modal-msg');
+      if (customMessage) {
+        modalMsg.textContent = customMessage;
+      } else if (unanswered > 0) {
+        modalMsg.innerHTML = `You still have <strong class="text-rose-600 font-bold">${unanswered} unanswered item(s)</strong> out of 25. Are you sure you want to submit now?`;
+      } else {
+        modalMsg.textContent = "You have answered all 25 items! Are you ready to submit your test and view your detailed results?";
+      }
+
+      document.getElementById('submit-modal').classList.remove('hidden');
+    }
+
+    function closeSubmitModal() {
+      document.getElementById('submit-modal').classList.add('hidden');
+    }
+
+    function confirmSubmission() {
+      closeSubmitModal();
+      if (timerInterval) clearInterval(timerInterval);
+      generateResults();
+    }
+
+    function generateResults() {
+      let score = 0;
+      const categoryStats = {};
+
+      activeQuestions.forEach(q => {
+        if (!categoryStats[q.cat]) {
+          categoryStats[q.cat] = { correct: 0, total: 0 };
+        }
+        categoryStats[q.cat].total++;
+
+        // Decode obfuscated answer using atob
+        if (userAnswers[q.id] === atob(q._a)) {
+          score++;
+          categoryStats[q.cat].correct++;
+        }
+      });
+
+      const percentage = Math.round((score / TEST_LIMIT) * 100);
+
+      document.getElementById('quiz-section').classList.add('hidden');
+      document.getElementById('results-section').classList.remove('hidden');
+
+      // Trigger the background save to Google Sheets
+      saveResultsToSheet(score, percentage);
+
+      document.getElementById('res-student-info').textContent = `${studentDetails.name} • ${studentDetails.grade} - ${studentDetails.section}`;
+      document.getElementById('final-score').textContent = `${score} / ${TEST_LIMIT}`;
+
+      const percentageBadge = document.getElementById('score-percentage-badge');
+      percentageBadge.textContent = `${percentage}% Proficiency`;
+
+      const scoreIcon = document.getElementById('score-icon');
+      const scoreWrapper = document.getElementById('score-icon-wrapper');
+      
+      const headlineEl = document.getElementById('result-headline');
+      const growthMessageEl = document.getElementById('growth-message');
+      const quoteEl = document.getElementById('growth-quote');
+
+      if (score === TEST_LIMIT && typeof confetti === 'function') {
+        // Initial central burst
+        confetti({
+          particleCount: 150,
+          spread: 90,
+          origin: { y: 0.6 }
+        });
+        
+        // Side cannons burst shortly after
+        setTimeout(() => {
+          confetti({ particleCount: 100, angle: 60, spread: 70, origin: { x: 0, y: 0.7 } });
+          confetti({ particleCount: 100, angle: 120, spread: 70, origin: { x: 1, y: 0.7 } });
+        }, 300);
+      }
+
+      if (percentage >= 85) {
+        percentageBadge.className = "mt-3 inline-block px-4 py-1.5 rounded-full text-sm font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200";
+        scoreWrapper.className = "inline-flex items-center justify-center w-24 h-24 rounded-3xl bg-emerald-100 text-emerald-600 text-4xl font-extrabold mb-4 shadow-inner";
+        scoreIcon.className = "fa-solid fa-award";
+        
+        headlineEl.textContent = score === TEST_LIMIT ? "PERFECT SCORE! Outstanding Effort!" : "Outstanding Effort!";
+        growthMessageEl.innerHTML = score === TEST_LIMIT 
+          ? "Sensational job! You achieved a perfect score of 100%. Your complete mastery of these math concepts is truly inspiring!" 
+          : "Your hard work and dedication are really paying off. You've built a strong understanding of these concepts!";
+        quoteEl.innerHTML = `“Success is the sum of small efforts, repeated day in and day out.” <br><span class="text-xs font-semibold mt-1 block opacity-75">— Robert Collier</span>`;
+      } else if (percentage >= 60) {
+        percentageBadge.className = "mt-3 inline-block px-4 py-1.5 rounded-full text-sm font-extrabold bg-blue-100 text-blue-800 border border-blue-200";
+        scoreWrapper.className = "inline-flex items-center justify-center w-24 h-24 rounded-3xl bg-blue-100 text-blue-600 text-4xl font-extrabold mb-4 shadow-inner";
+        scoreIcon.className = "fa-solid fa-thumbs-up";
+        
+        headlineEl.textContent = "Great Progress!";
+        growthMessageEl.innerHTML = "You are on the right track! Every mistake is a learning opportunity that makes your brain stronger. Keep pushing yourself!";
+        quoteEl.innerHTML = `“It's not that I'm so smart, it's just that I stay with problems longer.” <br><span class="text-xs font-semibold mt-1 block opacity-75">— Albert Einstein</span>`;
+      } else {
+        percentageBadge.className = "mt-3 inline-block px-4 py-1.5 rounded-full text-sm font-extrabold bg-amber-100 text-amber-800 border border-amber-200";
+        scoreWrapper.className = "inline-flex items-center justify-center w-24 h-24 rounded-3xl bg-amber-100 text-amber-600 text-4xl font-extrabold mb-4 shadow-inner";
+        scoreIcon.className = "fa-solid fa-book-open-reader";
+        
+        headlineEl.textContent = "Keep Growing!";
+        growthMessageEl.innerHTML = "This is a great starting point! Remember, your brain is like a muscle—it grows stronger when it faces challenges. Review your mistakes below and try again!";
+        quoteEl.innerHTML = `“Mistakes are proof that you are trying. Believe in yourself and keep going.” <br><span class="text-xs font-semibold mt-1 block opacity-75">— Unknown</span>`;
+      }
+
+      // Cognitive Domain Mastery Breakdown
+      const cognitiveContainer = document.getElementById('cognitive-breakdown');
+      cognitiveContainer.innerHTML = '';
+      Object.entries(categoryStats).forEach(([cat, data]) => {
+        const catPct = Math.round((data.correct / data.total) * 100);
+        const card = document.createElement('div');
+        card.className = "bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm";
+        card.innerHTML = `
+          <div class="text-xs font-bold text-slate-500 uppercase">${cat}</div>
+          <div class="flex items-center justify-between mt-1">
+            <span class="text-lg font-black text-slate-800">${data.correct}/${data.total}</span>
+            <span class="text-xs font-bold px-2 py-0.5 rounded-md ${catPct >= 70 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${catPct}%</span>
+          </div>
+        `;
+        cognitiveContainer.appendChild(card);
+      });
+
+      // Item Detailed Breakdown
+      const container = document.getElementById('breakdown-container');
+      container.innerHTML = '';
+
+      activeQuestions.forEach((q, idx) => {
+        const userAns = userAnswers[q.id];
+        const actualAns = atob(q._a);
+        const isCorrect = userAns === actualAns;
+
+        const card = document.createElement('div');
+        card.className = `p-5 sm:p-6 rounded-2xl border-2 transition print-break-inside ${
+          isCorrect ? 'border-emerald-200 bg-emerald-50/40' : 'border-rose-200 bg-rose-50/40'
+        }`;
+
+        card.innerHTML = `
+          <div class="flex justify-between items-start gap-3 mb-3">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-black uppercase tracking-wider text-slate-600 bg-white border border-slate-200 px-3 py-1 rounded-lg">
+                Item ${idx + 1}
+              </span>
+              <span class="text-xs font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">
+                ${q.cat}
+              </span>
+            </div>
+            <span class="text-xs px-3 py-1 rounded-lg font-extrabold shadow-sm ${
+              isCorrect ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white'
+            }">
+              ${isCorrect ? '<i class="fa-solid fa-check mr-1"></i> Correct' : '<i class="fa-solid fa-xmark mr-1"></i> Incorrect'}
+            </span>
+          </div>
+
+          <p class="text-base sm:text-lg font-bold text-slate-900 mb-4">${q.q}</p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm mb-4">
+            <div class="p-3 rounded-xl border ${
+              isCorrect ? 'border-emerald-200 bg-emerald-100/60 text-emerald-950' : 'border-rose-200 bg-rose-100/60 text-rose-950'
+            }">
+              <strong class="block mb-1 opacity-75 uppercase tracking-wider text-[10px]">Your Answer</strong>
+              ${userAns ? `<strong>${userAns}.</strong> ${q.options[userAns]}` : '<em class="opacity-70">No answer selected</em>'}
+            </div>
+            <div class="p-3 rounded-xl border border-emerald-200 bg-emerald-100/60 text-emerald-950">
+              <strong class="block mb-1 opacity-75 uppercase tracking-wider text-[10px]">Correct Answer</strong>
+              <strong>${actualAns}.</strong> ${q.options[actualAns]}
+            </div>
+          </div>
+
+          <div class="p-3.5 bg-white/80 border border-slate-200/80 rounded-xl text-xs text-slate-700 leading-relaxed">
+            <strong class="text-slate-900 font-bold block mb-0.5"><i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> Explanation:</strong>
+            ${q.exp}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function saveResultsToSheet(score, percentage) {
+      if (APPS_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL') {
+        console.warn("Apps Script URL not set. Please replace the placeholder string.");
+        return;
+      }
+
+      const saveStatus = document.getElementById('save-status');
+      if (saveStatus) {
+        saveStatus.classList.remove('hidden');
+        saveStatus.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-brand-500 mr-1"></i> Saving results to database...';
+      }
+
+      // Map out exactly which answers the student gave based on Question ID
+      const mappedAnswers = {};
+      activeQuestions.forEach(q => {
+        mappedAnswers[q.id] = userAnswers[q.id] || "No Answer";
+      });
+
+      const payload = {
+        name: studentDetails.name,
+        grade: studentDetails.grade,
+        section: studentDetails.section,
+        mode: isTimedMode ? "Timed" : "Untimed",
+        score: score,
+        percentage: percentage,
+        answers: mappedAnswers
+      };
+
+      // Send via POST using text/plain to avoid CORS preflight issues
+      fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8', 
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (saveStatus) {
+          saveStatus.innerHTML = '<i class="fa-solid fa-check-circle text-emerald-500 mr-1"></i> Results securely saved to Teacher Dashboard!';
+          setTimeout(() => saveStatus.classList.add('hidden'), 5000);
+        }
+      })
+      .catch(error => {
+        console.error('Error saving to sheet:', error);
+        if (saveStatus) {
+          saveStatus.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-rose-500 mr-1"></i> Failed to save to database. Check connection.';
+        }
+      });
+    }
+
+    function restartQuiz() {
+      document.getElementById('results-section').classList.add('hidden');
+      document.getElementById('setup-section').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleBankModal() {
+      const modal = document.getElementById('bank-modal');
+      const isHidden = modal.classList.contains('hidden');
+      if (isHidden) {
+        renderBankList(masterQuestions);
+        modal.classList.remove('hidden');
+      } else {
+        modal.classList.add('hidden');
+      }
+    }
+
+    function renderBankList(questions) {
+      const list = document.getElementById('bank-questions-list');
+      list.innerHTML = '';
+      
+      questions.forEach((q, idx) => {
+        const item = document.createElement('div');
+        item.className = "p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm space-y-2";
+        item.innerHTML = `
+          <div class="flex justify-between items-center text-xs font-bold text-slate-500">
+            <span>Pool Item #${q.id}</span>
+            <span class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded border border-brand-200">${q.cat}</span>
+          </div>
+          <p class="font-bold text-slate-800">${q.q}</p>
+          <div class="grid grid-cols-2 gap-1.5 text-slate-600 font-medium text-xs">
+            <div>A. ${q.options.A}</div>
+            <div>B. ${q.options.B}</div>
+            <div>C. ${q.options.C}</div>
+            <div>D. ${q.options.D}</div>
+          </div>
+          <div class="text-emerald-700 font-bold text-xs pt-1 border-t border-slate-200">
+            Correct: ${atob(q._a)}
+          </div>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    function filterBankQuestions() {
+      const query = document.getElementById('bank-search').value.toLowerCase();
+      const filtered = masterQuestions.filter(q => 
+        q.q.toLowerCase().includes(query) || 
+        q.cat.toLowerCase().includes(query) ||
+        q.id.toString().includes(query)
+      );
+      renderBankList(filtered);
+    }
+
+    function promptBankPassword() {
+      document.getElementById('bank-password').value = '';
+      document.getElementById('password-error').classList.add('hidden');
+      document.getElementById('password-modal').classList.remove('hidden');
+      setTimeout(() => document.getElementById('bank-password').focus(), 100);
+    }
+
+    function closePasswordModal() {
+      document.getElementById('password-modal').classList.add('hidden');
+    }
+
+    function verifyBankPassword() {
+      const input = document.getElementById('bank-password').value;
+      // Base64 logic for 'teacher123' -> 'dGVhY2hlcjEyMw=='
+      if (btoa(input.toLowerCase()) === 'dGVhY2hlcjEyMw==') {
+        closePasswordModal();
+        toggleBankModal();
+      } else {
+        document.getElementById('password-error').classList.remove('hidden');
+      }
+    }
+
+    // Allow 'Enter' key to submit password
+    document.getElementById('bank-password')?.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') verifyBankPassword();
+    });
+  </script>
+</body>
+</html>
